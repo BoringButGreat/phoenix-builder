@@ -4,61 +4,63 @@ FROM erlang:19
 # combined, because multiple inheritence is not a thing.
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-		autoconf \
-		automake \
-		bzip2 \
-		file \
-		g++ \
-		gcc \
-		imagemagick \
-		libbz2-dev \
-		libc6-dev \
-		libcurl4-openssl-dev \
-		libevent-dev \
-		libffi-dev \
-		libgeoip-dev \
-		libglib2.0-dev \
-		libjpeg-dev \
-		liblzma-dev \
-		libmagickcore-dev \
-		libmagickwand-dev \
-		libmysqlclient-dev \
-		libncurses-dev \
-		libpng-dev \
-		libpq-dev \
-		libreadline-dev \
-		libsqlite3-dev \
-		libssl-dev \
-		libtool \
-		libwebp-dev \
-		libxml2-dev \
-		libxslt-dev \
-		libyaml-dev \
-		make \
-		patch \
-		xz-utils \
-		zlib1g-dev \
+    autoconf \
+    automake \
+    bzip2 \
+    file \
+    g++ \
+    gcc \
+    imagemagick \
+    libbz2-dev \
+    libc6-dev \
+    libcurl4-openssl-dev \
+    libevent-dev \
+    libffi-dev \
+    libgeoip-dev \
+    libglib2.0-dev \
+    libjpeg-dev \
+    liblzma-dev \
+    libmagickcore-dev \
+    libmagickwand-dev \
+    libmysqlclient-dev \
+    libncurses-dev \
+    libpng-dev \
+    libpq-dev \
+    libreadline-dev \
+    libsqlite3-dev \
+    libssl-dev \
+    libtool \
+    libwebp-dev \
+    libxml2-dev \
+    libxslt-dev \
+    libyaml-dev \
+    make \
+    patch \
+    xz-utils \
+    zlib1g-dev \
     curl \
     ca-certificates \
     git \
   && apt-get upgrade -y \
-	&& rm -rf /var/lib/apt/lists/*
+  && rm -rf /var/lib/apt/lists/*
 
 ENV ELIXIR_VERSION="v1.3.0" \
-	LANG=C.UTF-8
+  LANG=C.UTF-8
 
 RUN set -xe \
-	&& ELIXIR_DOWNLOAD_URL="https://github.com/elixir-lang/elixir/archive/${ELIXIR_VERSION#*@}.tar.gz" \
-	&& ELIXIR_DOWNLOAD_SHA256="66cb8448dd60397cad11ba554c2613f732192c9026468cff55e8347a5ae4004a" \
-	&& curl -fSL -o elixir-src.tar.gz $ELIXIR_DOWNLOAD_URL \
-	&& echo "$ELIXIR_DOWNLOAD_SHA256 elixir-src.tar.gz" | sha256sum -c - \
-	&& mkdir -p /usr/src/elixir-src \
-	&& tar -xzf elixir-src.tar.gz -C /usr/src/elixir-src --strip-components=1 \
-	&& rm elixir-src.tar.gz \
-	&& cd /usr/src/elixir-src \
-	&& make -j$(nproc) \
-	&& make install \
-	&& rm -rf /usr/src/elixir-src
+  && ELIXIR_DOWNLOAD_URL="https://github.com/elixir-lang/elixir/archive/${ELIXIR_VERSION#*@}.tar.gz" \
+  && ELIXIR_DOWNLOAD_SHA256="66cb8448dd60397cad11ba554c2613f732192c9026468cff55e8347a5ae4004a" \
+  && curl -fSL -o elixir-src.tar.gz $ELIXIR_DOWNLOAD_URL \
+  && echo "$ELIXIR_DOWNLOAD_SHA256 elixir-src.tar.gz" | sha256sum -c - \
+  && mkdir -p /usr/src/elixir-src \
+  && tar -xzf elixir-src.tar.gz -C /usr/src/elixir-src --strip-components=1 \
+  && rm elixir-src.tar.gz \
+  && cd /usr/src/elixir-src \
+  && make -j$(nproc) \
+  && make install \
+  && rm -rf /usr/src/elixir-src \
+  && mix local.hex --force \
+  && mix local.rebar --force
 
 # gpg keys listed at https://github.com/nodejs/node
 RUN set -ex \
