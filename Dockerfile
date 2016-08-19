@@ -58,9 +58,10 @@ RUN set -xe \
   && cd /usr/src/elixir-src \
   && make -j$(nproc) \
   && make install \
-  && rm -rf /usr/src/elixir-src \
-  && mix local.hex --force \
-  && mix local.rebar --force
+  && rm -rf /usr/src/elixir-src
+
+RUN mix local.hex --force
+RUN mix local.rebar --force
 
 # gpg keys listed at https://github.com/nodejs/node
 RUN set -ex \
