@@ -1,4 +1,4 @@
-FROM erlang:19
+FROM erlang:19.3.1
 
 # Stolen from node:4.4.2 and buildpack-deps and the c0b/elixir dockerfile
 # combined, because multiple inheritence is not a thing.
